@@ -1,0 +1,11 @@
+{
+  "manifest_version": 2,
+
+  "name": "ebook-copier",
+  "description": "This extension will copy an online ebook",
+  "version": "1.0",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["tabs", "debugger"]
+}
