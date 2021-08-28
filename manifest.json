@@ -4,8 +4,20 @@
   "name": "ebook-copier",
   "description": "This extension will copy an online ebook",
   "version": "1.0",
-  "browser_action": {
-    "default_popup": "popup.html"
+  "content_scripts": [
+    {
+      "matches": ["https://platform.virdocs.com/*"],
+      "js": [
+        "content/renderer.js",
+        "content/messenger.js",
+        "library/jspdf.umd.min.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "scripts": ["content/background.js"],
+    "persistent": false
   },
   "permissions": ["tabs", "debugger"]
 }
