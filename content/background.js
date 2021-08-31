@@ -9,6 +9,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         main(tabs[0]);
       }
     );
+  } else if (request.message === "pdf") {
+    sendResponse({ message: "background.js pdf opened" });
+
+    chrome.tabs.create({ url: request.url });
   }
 });
 
