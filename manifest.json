@@ -10,9 +10,7 @@
       "js": [
         "content/renderer.js",
         "content/messenger.js",
-        "library/jspdf.umd.min.js",
-        "library/jquery-3.5.1.min.js",
-        "library/html2canvas.min.js"
+        "library/jquery-3.5.1.min.js"
       ],
       "run_at": "document_idle"
     }

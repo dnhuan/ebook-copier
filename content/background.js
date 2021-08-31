@@ -9,10 +9,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         main(tabs[0]);
       }
     );
-  } else if (request.message === "pdf") {
-    sendResponse({ message: "background.js pdf opened" });
+  } else if (request.message === "uri") {
+    sendResponse({ message: "image opened" });
 
     chrome.tabs.create({ url: request.url });
+  } else if (request.message === "download") {
+    sendResponse({ message: `image ${request.filename}.png downloaded` });
+
+    chrome.downloads.download({
+      url: request.url,
+      filename: request.filename + ".png",
+    });
   }
 });
 
