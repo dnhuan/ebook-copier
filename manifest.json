@@ -10,7 +10,8 @@
       "js": [
         "content/renderer.js",
         "content/messenger.js",
-        "library/jquery-3.5.1.min.js"
+        "library/jquery-3.5.1.min.js",
+        "library/FileSaver.js"
       ],
       "run_at": "document_idle"
     }

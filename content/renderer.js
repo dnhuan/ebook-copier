@@ -23,46 +23,35 @@ function logState() {
 }
 
 function main() {
-  let img = new Image();
-  img.src = $("iframe").contents().find("html").find("img")[0].currentSrc;
-  img.onload = () => {
-    // create a canvas object
-    let canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+  // get url of xhtml
+  let data = $("iframe").contents().find("html")[0].outerHTML;
 
-    // copy image contents to canvas
-    let ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-
-    // get data from canvas object
-    let data = canvas.toDataURL("image/png");
-
-    // filename
-    let filename = $("iframe")
-      .contents()
-      .find("html")
-      .find("img")[0]
-      .alt.match(/\s(\w+)$/)[1];
-    chrome.runtime.sendMessage(
-      { message: "download", url: data, filename: filename },
-      (res) => {
-        console.log(res.message);
-        $(".spine-entry-nav-container-next")[0].click();
-        let lastSrc = img.src;
-        let newPageTimer = setInterval(checkForNewPageInDOM, 50);
-        function checkForNewPageInDOM() {
-          let thisSrc = $("iframe")
-            .contents()
-            .find("html")
-            .find("img")[0].currentSrc;
-          if (thisSrc !== lastSrc) {
-            clearInterval(newPageTimer);
-            waitForBookContent();
-          }
-          lastSrc = thisSrc;
-        }
+  // filename
+  let filename = $("iframe")
+    .contents()
+    .find("html")
+    .find("img")[0]
+    .alt.match(/\s(\S+)$/)[1]
+    .trim();
+  let blob = new Blob([data], {
+    type: "application/xhtml+xml;charset=utf-8",
+  });
+  saveAs(blob, `${filename}.xhtml`);
+  setTimeout(() => {
+    $(".spine-entry-nav-container-next")[0].click();
+    let lastSrc = $("iframe").contents().find("html").find("img")[0].currentSrc;
+    let newPageTimer = setInterval(checkForNewPageInDOM, 50);
+    function checkForNewPageInDOM() {
+      let thisSrc = $("iframe")
+        .contents()
+        .find("html")
+        .find("img")[0].currentSrc;
+      if (thisSrc !== lastSrc) {
+        clearInterval(newPageTimer);
+        console.log("clear :>> ");
+        // waitForBookContent();
       }
-    );
-  };
+      lastSrc = thisSrc;
+    }
+  }, 500);
 }
